@@ -23,7 +23,7 @@ const navList: NavItem[] = [
   
   {
     title: "How it works",
-    link: "/howitworks",
+    link: "/howitwork",
   },
   {
     title: "About",
