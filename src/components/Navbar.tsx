@@ -2,9 +2,8 @@
 import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
-import { useWeb3Modal } from '@web3modal/ethers/react'
 import { useRouter } from "next/navigation";
-import { Web3Modal } from "@web3modal/ethers";
+import { useWeb3Modal } from "@web3modal/ethers5/react";
 
 
 
@@ -110,7 +109,11 @@ const Navbar = () => {
         {/* Wallet and Language Selection for Desktop */}
         <div className="lg:flex items-center gap-5">
 
-          
+          <Link href='/Registration'>
+          <div>
+            <button className="rounded-3xl border border-zinc-600 p-1  bg-zinc-800 mr-4 py-2 text-lg px-3" >Registration</button>
+           </div>
+          </Link>
      <w3m-button balance="show"/>
           <div className="">
           
