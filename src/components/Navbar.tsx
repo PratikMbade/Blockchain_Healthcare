@@ -3,7 +3,9 @@ import Image from "next/image";
 import { useContext, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useWeb3Modal } from "@web3modal/ethers5/react";
+import { useWeb3Modal, useWeb3ModalAccount } from "@web3modal/ethers5/react";
+import useReg from "@/Hooks/useReg";
+import { redirect } from "next/dist/server/api-utils";
 
 
 
@@ -41,17 +43,27 @@ const navList: NavItem[] = [
 
 const Navbar = () => {
   const [activeNav, setActiveNav] = useState<String>("#home");
-
+  const isReg = useReg()
   const router = useRouter(); // Add this line
   // const { open } = useWeb3Modal();
   // const { address, isConnected } = useWeb3ModalAccount();
   const { open } = useWeb3Modal()
 
+  const {isConnected} = useWeb3ModalAccount();
 
 
 
 
 
+  useEffect(() => {
+
+    console.log("hell",isReg)
+
+    if (isReg) {
+      console.log("is reg in fi",isReg)
+        router.push("/dashboard"); // Redirect user to dashboard if they are registered
+    }
+}, [isReg, router,isConnected]);
 
 
 

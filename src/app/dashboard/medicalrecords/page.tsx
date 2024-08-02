@@ -1,7 +1,53 @@
+'use client';
+import { contract_abi, contract_address } from '@/contract/contract_instance';
 import { PaperClipIcon } from '@heroicons/react/16/solid'
-import React from 'react'
+import { useWeb3Modal, useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { ethers } from 'ethers';
+import React, { useActionState, useEffect, useState } from 'react'
 
 const Page = () => {
+    const {walletProvider} = useWeb3ModalProvider()
+    const {address} = useWeb3ModalAccount()
+    const [patientData, setPatientData] = useState<any>('');
+
+    const getPatientDetailas = async ()=>{
+        try {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const contract = new ethers.Contract(contract_address,contract_abi,signer);
+    
+    
+          const patientData = await contract!.getRecord(address)
+          console.log("patient data",patientData)
+    
+          const extractedData = {
+            timestamp: patientData[0].toNumber(),
+            name: patientData[1],
+            age: patientData[2].toNumber(),
+            gender: patientData[3],
+            bloodType: patientData[4],
+            allergies: patientData[5],
+            diagnosis: patientData[6],
+            treatment: patientData[7]
+        };
+    
+        console.log("patient data", extractedData);
+        setPatientData(extractedData!)
+    
+    
+        //   console.log("formatted",formatted)
+    
+        } catch (error) {
+           console.log("Something went wrong in getPatient ",error)
+        }
+    
+      
+    }
+    
+    
+    useEffect(()=>{
+      getPatientDetailas()
+    },[])
   return (
     <div className='w-full h-full flex flex-col items-center justify-center'>
         <div className='flex justify-center mt-5'>
@@ -16,7 +62,7 @@ const Page = () => {
                 <dl className="divide-y divide-gray-200">
                     <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 ">Patient Name</dt>
-                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">Pratik Bade</dd>
+                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">{patientData.name}</dd>
                     </div>
                     <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 ">Date of Birth</dt>
@@ -24,7 +70,7 @@ const Page = () => {
                     </div>
                     <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 ">Gender</dt>
-                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">Male</dd>
+                        <dd className="mt-1 text-sm leading-6 sm:col-span-2 sm:mt-0">{patientData.gender}</dd>
                     </div>
                     <div className="px-4 py-3 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                         <dt className="text-sm font-medium leading-6 ">Emergency Contact</dt>

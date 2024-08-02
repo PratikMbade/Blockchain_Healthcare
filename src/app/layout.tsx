@@ -20,7 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Web3Modal>
-          <Navbar/>
+        
           {children}</Web3Modal>
       </body>
     </html>

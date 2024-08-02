@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import { ethers } from 'ethers';
 import contract_Abi from '@/contract/contract_abi.json';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import Navbar from '@/components/Navbar';
 
 
 export const contract_address = "0xa224EcFf7b64bC3b81417e4af18cbDeC14da5801";
@@ -56,7 +57,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
       await tx.wait();
 
-      router.push('/newpage');
+      router.push('/dashboard');
     } catch (error) {
       console.error('Error submitting form:', error);
     }
@@ -67,6 +68,7 @@ const handleSubmit = async (e: React.FormEvent) => {
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-stone-900 overflow-y-auto mt-20">
+      <Navbar/>
       <div className="bg-white p-8 rounded-lg shadow-lg max-w-md w-full">
         <h2 className="text-2xl font-bold mb-6 text-center text-gray-800">Personal Information</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -77,7 +79,7 @@ const handleSubmit = async (e: React.FormEvent) => {
               name="name"
               value={formData.name}
               onChange={handleChange}
-              className="mt-1 p-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              className="mt-1 p-2 block w-full text-black border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
             />
           </div>
 

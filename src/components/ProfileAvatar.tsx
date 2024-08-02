@@ -1,10 +1,17 @@
 'use client'
 import Image from 'next/image';
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { FaRegCopy } from 'react-icons/fa'
 import UserInfo from './UserInfo';
+import { BigNumber, ethers } from 'ethers';
+import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { contract_abi, contract_address } from '@/contract/contract_instance';
 
 const ProfileAvatar = () => {
+    const {walletProvider} = useWeb3ModalProvider()
+    const {address} = useWeb3ModalAccount()
+    const [patientData, setPatientData] = useState<any>('');
+
 
 
     const copyToClipboard = (text: string) => {
@@ -15,6 +22,9 @@ const ProfileAvatar = () => {
             console.log(error);
         }
     };
+
+  
+   
   return (
     <>
     <div className=" flex flex-col items-center justify-center  w-auto  h-auto">

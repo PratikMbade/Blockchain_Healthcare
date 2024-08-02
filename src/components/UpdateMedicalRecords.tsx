@@ -1,15 +1,60 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 // Adding Textarea component for larger text inputs
 import { cn } from "@/utils/cn";
+import { ethers } from "ethers";
+import { contract_abi, contract_address } from "@/contract/contract_instance";
+import { useWeb3ModalAccount, useWeb3ModalProvider } from "@web3modal/ethers5/react";
 
 export function UpdateMedicalRecords() {
+
+  const [formData, setFormData] = useState({
+    name: '',
+    age: '',
+    gender: '',
+    bloodType: '',
+    allergies: '',
+    diagnosis: '',
+    treatment: ''
+  });
+
+  const {address} = useWeb3ModalAccount()
+
+  const {walletProvider} = useWeb3ModalProvider()
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log("Form submitted");
   };
+
+
+  const UpdateMedicalRecordsSC = async () =>{
+    try {
+      const provider = new ethers.providers.Web3Provider(walletProvider as any);
+      const signer = provider.getSigner();
+      const contract = new ethers.Contract(contract_address,contract_abi,signer);
+
+      const updateData = await contract!.updateRecord(
+        address,
+        formData.name,
+        parseInt(formData.age),
+        formData.gender,
+        formData.bloodType,
+        formData.allergies,
+        formData.diagnosis,
+        formData.treatment
+      )
+
+      
+
+
+
+      
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <div className=" w-[80%] mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-stone-900">
